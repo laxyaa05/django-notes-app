@@ -1,24 +1,35 @@
-@Library('Shared')_
+@Library("shared") _
 pipeline{
-    agent { label 'laxyaa'}
-    
+    agent { label "laxyaa" }
+    triggers { githubPush() }
     stages{
-        stage("Code clone"){
+        stage("hello"){
             steps{
-                sh "whoami"
-            clone("https://github.com/LondheShubham153/django-notes-app.git","main")
+                script{
+                    hello()
+                }
             }
         }
-        stage("Code Build"){
+        stage("Code"){
             steps{
-            dockerbuild("notes-app","latest")
+                script{
+                   clone("https://github.com/LondheShubham153/django-notes-app.git","main") 
+                }
+            }
+        }
+        stage("Build"){
+            steps{
+                script{
+                    build()
+                }
             }
         }
         stage("Deploy"){
             steps{
-                deploy()
+                script{
+                    deploy()
+                }
             }
         }
-        
     }
 }
